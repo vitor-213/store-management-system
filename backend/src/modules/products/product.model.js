@@ -94,7 +94,9 @@ productSchema.index({ name: "text", description: "text" });
 productSchema.virtual("profitMargin").get(function () {
   if (this.price && this.costPrice !== undefined) {
     return this.price > 0
-      ? parseFloat((((this.price - this.costPrice) / this.price) * 100).toFixed(2))
+      ? parseFloat(
+          (((this.price - this.costPrice) / this.price) * 100).toFixed(2),
+        )
       : null;
   }
   return null;

@@ -31,7 +31,11 @@ export const findMovementById = async (id) => {
     .populate("performedBy", "name email");
 };
 
-export const aggregateMovementsByProduct = async (productId, startDate, endDate) => {
+export const aggregateMovementsByProduct = async (
+  productId,
+  startDate,
+  endDate,
+) => {
   const match = { product: productId };
   if (startDate || endDate) {
     match.createdAt = {};
@@ -94,10 +98,16 @@ export const findAlertById = async (id) => {
 };
 
 export const updateAlertById = async (id, data) => {
-  return await InventoryAlert.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+  return await InventoryAlert.findByIdAndUpdate(id, data, {
+    new: true,
+    runValidators: true,
+  });
 };
 
-export const findActiveAlertForProduct = async (productId, type = "low_stock") => {
+export const findActiveAlertForProduct = async (
+  productId,
+  type = "low_stock",
+) => {
   return await InventoryAlert.findOne({
     product: productId,
     type,

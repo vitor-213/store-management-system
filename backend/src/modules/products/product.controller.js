@@ -9,13 +9,22 @@ import {
 import asyncHandler from "../../utils/asyncHandler.js";
 
 export const createProduct = asyncHandler(async (req, res) => {
-  const product = await createProductService(req.body, req.user._id);
+  const product = await createProductService(req.body, req.user?._id);
   res.status(201).json({ success: true, data: product });
 });
 
 export const getProducts = asyncHandler(async (req, res) => {
   const result = await getProductsService(req.query);
-  res.json({ success: true, ...result });
+  res.json({
+    success: true,
+    data: result.products || [],
+    pagination: {
+      page: result.page || 1,
+      totalPages: result.totalPages || 1,
+      total: result.total || 0,
+      limit: result.limit || 20,
+    },
+  });
 });
 
 export const getProduct = asyncHandler(async (req, res) => {
@@ -27,7 +36,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
   const product = await updateProductService(
     req.params.id,
     req.body,
-    req.user._id,
+    req.user?._id,
   );
   res.json({ success: true, data: product });
 });
